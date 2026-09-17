@@ -3,6 +3,9 @@ package p9979w;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*
 JPanel
@@ -49,6 +52,7 @@ public class SalesManagementFrame extends JFrame {
     private ArrayList<Sale> saleList;
 
     private JTextArea resultArea;
+    private SalesCalculator salesCalculator = new SalesCalculator();
 
     public SalesManagementFrame() {
         setTitle("売上管理システム");
@@ -279,18 +283,56 @@ public class SalesManagementFrame extends JFrame {
                 System.out.println("先にCSVを読み込んでください");
                 return;
             }
-            // 計算用SalesCalculatorをインスタンス化
-            SalesCalculator calculator = new SalesCalculator();
             resultArea.setText("");
             // 今回はappendで追加追加していく。setTextすると上書きで消えてしまう為。
             resultArea.append("売上番号,販売日,従業員番号,商品名,単価,数量,売上金額\n");
             // saleList の中に入っている Sale を1件ずつ sale という変数に入れて処理する
             for (Sale sale : saleList) {
-                int salesAmount = calculator.calculateSales(sale);
+                int salesAmount = salesCalculator.calculateSales(sale);
                 resultArea.append("売上番号：" + sale.getSalesId() + " " + "販売日：" + sale.getSalesDate() + " " + "従業員番号："
                         + sale.getEmployeeId() + " " + "商品名：" +
                         sale.getProductName() + " " + "単価：" + sale.getUnitPrice() + "円 " + "数量：" + sale.getQuantity()
                         + " " + "売上金額：" + salesAmount + "円\n");
+            }
+        });
+
+        //従業員別売上用アクションリスナー
+        //employeeSalesButton が操作されたときに、この処理を実行してくださいという式(JButtonのメソッド)
+        //e -> {の部分は、ラムダ式 new ActionListener(){@Override public void actionPerformed(ActionEvent e){ が省略されている。}}
+        employeeSalesButton.addActionListener(e -> {
+            //一度リザルトエリアのテキストを空文字にする処理
+            resultArea.setText("");
+            //従業員IDと、その従業員の売上合計を保存するMapをここで作ります。Stringがキー、Integerが値です。
+            Map<String, Integer> employeeSales = new HashMap<>();
+            //saleList の中にある Sale を1件ずつ取り出す。取り出しながら、売上金額を計算し、社員番号を取ってくる。
+            for (Sale sale : saleList) {
+                //売上金額を計算 salesCalculatorのcalculateSalesにsaleを渡すと、Sale型 saleに渡せて、計算して返ってくるのでint型salesAmountに入れる。
+                int salesAmount = salesCalculator.calculateSales(sale);
+                //従業員IDを取り出す
+                String employeeId = sale.getEmployeeId();
+                //この従業員IDの現在の合計を取得する。まだ存在しなければ0を返す。最初に従業員IDから売上金額を拾おうとすると存在がないので、0を入れてから始めるということ。
+                //E001はまだMapに存在しない→0を返す。今回の売上が50,000円なら、0 + 50,000→50,000、となっていく。
+                //従業員IDを参照しつつ、employeeSalesというMAPに、拡張for文で従業員IDと売上合計額を保存していく。
+                employeeSales.put(
+                    employeeId,
+                    employeeSales.getOrDefault(employeeId, 0) + salesAmount
+                );
+            }
+            //MAPキーで作った従業員別売上リストを、従業員の番号順に並べ替える処理をここで入れる。
+            // employeeSales.keySet()でMapのキーを取り出します。それをnew ArrayList<>(...)でListにします。
+            List<String> employeeIds = new ArrayList<>(employeeSales.keySet());
+            //そして、employeeIds.sort(String::compareTo);で並べ替えます。その後順番に表示します。
+            employeeIds.sort(String::compareTo);
+            //ここで一人ずつ順番に表示する処理。
+            // 最初の for が終わったら、employeeSales の中身が、E001 → 70000なら、employeeSales.keySet()によって、E001というキーの集合を取得できます。
+            for (String employeeId : employeeIds) {
+            //売上合計を取得として、employeeIdが E001 なら、employeeSales.get("E001")となり、MapがE001 → 70000ならtotalSalesには、70000が入ります。
+                int totalSales = employeeSales.get(employeeId);
+                //ここはsetTextではなくてappend()。resultArea.append("A");→ 現在の文字の後ろに追加する。上のsetTextで先に全部消してから、append(...)で結果を1行ずつ追加しています。
+                resultArea.append(
+                    "従業員ID：" + employeeId
+                    + "　売上金額：" + totalSales + "円\n"
+                );
             }
         });
 
