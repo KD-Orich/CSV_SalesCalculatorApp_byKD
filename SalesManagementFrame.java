@@ -54,11 +54,12 @@ public class SalesManagementFrame extends JFrame {
     private JTextArea resultArea;
     private SalesCalculator salesCalculator = new SalesCalculator();
 
+    // ココ、コンストラクタなので呼ばれたら実行される。
     public SalesManagementFrame() {
         setTitle("売上管理システム");
-        //最初に開くサイズの指定
+        // 最初に開くサイズの指定
         setSize(800, 600);
-        //ウィンドウの最小サイズを指定する方法。画面の崩れ防止で考える。
+        // ウィンドウの最小サイズを指定する方法。画面の崩れ防止で考える。
         setMinimumSize(new Dimension(600, 400));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -67,13 +68,13 @@ public class SalesManagementFrame extends JFrame {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
-        //上部の headerPanelタイトル部分です。setタイトルとは別なのかな？
+        // 上部の headerPanelタイトル部分です。setタイトルとは別なのかな？
         JPanel headerPanel = new JPanel();
         JLabel titleLabel = new JLabel("売上管理システム");
         headerPanel.add(titleLabel);
-        mainPanel.add(headerPanel,BorderLayout.NORTH);
+        mainPanel.add(headerPanel, BorderLayout.NORTH);
 
-        //CSV部分の filePanelを作成
+        // CSV部分の filePanelを作成
         JPanel filePanel = new JPanel();
         // 従業員CSV・従業員CSV：という文字を表示する部品を作っています。
         JLabel employeeLabel = new JLabel("従業員CSV：");
@@ -87,15 +88,13 @@ public class SalesManagementFrame extends JFrame {
         JLabel saleFileLabel = new JLabel("未選択");
         JButton loadButton = new JButton("データを読み込む");
 
-
-        //contentPanel を作る、「メニューと結果をまとめる箱」
+        // contentPanel を作る、「メニューと結果をまとめる箱」
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
 
-
-        //メニューパネルを作ります。
+        // メニューパネルを作ります。
         JPanel menuPanel = new JPanel();
-        //10個のボタンを縦に並べます。10,1,5,5の部分は、10行 × 1列という意味になるらしい。謎。
+        // 10個のボタンを縦に並べます。10,1,5,5の部分は、10行 × 1列という意味になるらしい。謎。
         menuPanel.setLayout(new GridLayout(10, 1, 5, 5));
         JButton allSalesButton = new JButton("1. 全売上表示");
         JButton employeeSalesButton = new JButton("2. 従業員別売上");
@@ -107,7 +106,7 @@ public class SalesManagementFrame extends JFrame {
         JButton productRankingButton = new JButton("8. 商品販売数量ランキング");
         JButton bonusButton = new JButton("9. ボーナス対象者一覧");
         JButton employeeListButton = new JButton("10. 従業員一覧");
-        //文字数が違っても10個のボタンが同じグリッド内に収まる呪文
+        // 文字数が違っても10個のボタンが同じグリッド内に収まる呪文
         menuPanel.add(allSalesButton);
         menuPanel.add(employeeSalesButton);
         menuPanel.add(dailySalesButton);
@@ -119,11 +118,10 @@ public class SalesManagementFrame extends JFrame {
         menuPanel.add(bonusButton);
         menuPanel.add(employeeListButton);
 
-
         JPanel resultPanel = new JPanel();
         resultPanel.setLayout(new BorderLayout());
 
-        //リザルトエリアを伸縮させるために追記2 入れ子構造実装中
+        // リザルトエリアを伸縮させるために追記2 入れ子構造実装中
         JLabel resultLabel = new JLabel("結果");
         resultPanel.add(resultLabel, BorderLayout.NORTH);
 
@@ -132,21 +130,17 @@ public class SalesManagementFrame extends JFrame {
         resultArea = new JTextArea();
         // ユーザーが結果欄を直接編集できないようにします。
         resultArea.setEditable(false);
-        //リザルトエリアを伸縮させるために追記
+        // リザルトエリアを伸縮させるために追記
         resultArea.setLineWrap(false);
         // スクロールしたいので追加↓
         JScrollPane scrollPane = new JScrollPane(resultArea);
         resultPanel.add(scrollPane, BorderLayout.CENTER);
 
-
         contentPanel.add(menuPanel, BorderLayout.WEST);
         contentPanel.add(resultPanel, BorderLayout.CENTER);
 
-
-        mainPanel.add(filePanel,BorderLayout.NORTH);
-        mainPanel.add(contentPanel,BorderLayout.CENTER);
-
-
+        mainPanel.add(filePanel, BorderLayout.NORTH);
+        mainPanel.add(contentPanel, BorderLayout.CENTER);
 
         // パネルに追加
         // panel
@@ -154,25 +148,25 @@ public class SalesManagementFrame extends JFrame {
         // └─ [ファイルを選択]
         // という状態になります。
         // panelインスタンスに、社員ラベル、ボタン 売上ラベル、ボタンを追加しているというコードなだけ。
-//         Swingではパネルを入れ子にして画面を構成するのが一般的です。ということで入れ子構造でパネルを分割して表示する手法
+        // Swingではパネルを入れ子にして画面を構成するのが一般的です。ということで入れ子構造でパネルを分割して表示する手法
         // JFrame
         // │
         // └─ mainPanel
-        //    │
-        //    ├─ headerPanel
-        //    │
-        //    ├─ filePanel
-        //    │
-        //    └─ contentPanel
-        //       │
-        //       ├─ menuPanel
-        //       │
-        //       └─ resultPanel
+        // │
+        // ├─ headerPanel
+        // │
+        // ├─ filePanel
+        // │
+        // └─ contentPanel
+        // │
+        // ├─ menuPanel
+        // │
+        // └─ resultPanel
         filePanel.add(employeeLabel);
         filePanel.add(employeeButton);
         filePanel.add(employeeFileLabel);
 
-        //タイトルラベルを新しく作ったので追加
+        // タイトルラベルを新しく作ったので追加
         headerPanel.add(titleLabel);
 
         filePanel.add(saleLabel);
@@ -180,8 +174,7 @@ public class SalesManagementFrame extends JFrame {
         filePanel.add(saleFileLabel);
         filePanel.add(loadButton);
 
-
-        //以下古いpanel用なのでコメントアウト。-----------
+        // 以下古いpanel用なのでコメントアウト。-----------
         // panel.add(saleLabel);
         // panel.add(saleButton);
         // panel.add(saleFileLabel);
@@ -189,11 +182,11 @@ public class SalesManagementFrame extends JFrame {
         // データを読み込むボタン用
         // panel.add(loadButton);
         // 全売上表示ボタン用←すでに作っているのでコメントアウトにしておく。
-        //menuPanel.add(allSalesButton);
+        // menuPanel.add(allSalesButton);
         // JTextAreaを画面に追加
         // panel.add(resultArea);
         // JTextArea画面にスクロールを作ろうとしたら指定が変わった↓ 縦の場合。
-        //panel.add(scrollPane);
+        // panel.add(scrollPane);
 
         // パネルをウィンドウに追加はお引越し
 
@@ -296,43 +289,486 @@ public class SalesManagementFrame extends JFrame {
             }
         });
 
-        //従業員別売上用アクションリスナー
-        //employeeSalesButton が操作されたときに、この処理を実行してくださいという式(JButtonのメソッド)
-        //e -> {の部分は、ラムダ式 new ActionListener(){@Override public void actionPerformed(ActionEvent e){ が省略されている。}}
+        // 従業員別売上用アクションリスナー
+        // employeeSalesButton が操作されたときに、この処理を実行してくださいという式(JButtonのメソッド)
+        // e -> {の部分は、ラムダ式 new ActionListener(){@Override public void
+        // actionPerformed(ActionEvent e){ が省略されている。}}
         employeeSalesButton.addActionListener(e -> {
-            //一度リザルトエリアのテキストを空文字にする処理
+            // 一度リザルトエリアのテキストを空文字にする処理
             resultArea.setText("");
-            //従業員IDと、その従業員の売上合計を保存するMapをここで作ります。Stringがキー、Integerが値です。
+            // 従業員IDと、その従業員の売上合計を保存するMapをここで作ります。Stringがキー、Integerが値です。
             Map<String, Integer> employeeSales = new HashMap<>();
-            //saleList の中にある Sale を1件ずつ取り出す。取り出しながら、売上金額を計算し、社員番号を取ってくる。
+            // saleList の中にある Sale を1件ずつ取り出す。取り出しながら、売上金額を計算し、社員番号を取ってくる。
             for (Sale sale : saleList) {
-                //売上金額を計算 salesCalculatorのcalculateSalesにsaleを渡すと、Sale型 saleに渡せて、計算して返ってくるのでint型salesAmountに入れる。
+                // 売上金額を計算 salesCalculatorのcalculateSalesにsaleを渡すと、Sale型
+                // saleに渡せて、計算して返ってくるのでint型salesAmountに入れる。
                 int salesAmount = salesCalculator.calculateSales(sale);
-                //従業員IDを取り出す
+                // 従業員IDを取り出す
                 String employeeId = sale.getEmployeeId();
-                //この従業員IDの現在の合計を取得する。まだ存在しなければ0を返す。最初に従業員IDから売上金額を拾おうとすると存在がないので、0を入れてから始めるということ。
-                //E001はまだMapに存在しない→0を返す。今回の売上が50,000円なら、0 + 50,000→50,000、となっていく。
-                //従業員IDを参照しつつ、employeeSalesというMAPに、拡張for文で従業員IDと売上合計額を保存していく。
+                // この従業員IDの現在の合計を取得する。まだ存在しなければ0を返す。最初に従業員IDから売上金額を拾おうとすると存在がないので、0を入れてから始めるということ。
+                // E001はまだMapに存在しない→0を返す。今回の売上が50,000円なら、0 + 50,000→50,000、となっていく。
+                // 従業員IDを参照しつつ、employeeSalesというMAPに、拡張for文で従業員IDと売上合計額を保存していく。
+                employeeSales.put(
+                        employeeId,
+                        employeeSales.getOrDefault(employeeId, 0) + salesAmount);
+            }
+            // MAPキーで作った従業員別売上リストを、従業員の番号順に並べ替える処理をここで入れる。
+            // employeeSales.keySet()でMapのキーを取り出します。それをnew ArrayList<>(...)でListにします。
+            List<String> employeeIds = new ArrayList<>(employeeSales.keySet());
+            // そして、employeeIds.sort(String::compareTo);で並べ替えます。その後順番に表示します。ここがメソッド参照で新しい技術。
+            employeeIds.sort(String::compareTo);
+            // ここで一人ずつ順番に表示する処理。
+            // 最初の for が終わったら、employeeSales の中身が、E001 →
+            // 70000なら、employeeSales.keySet()によって、E001というキーの集合を取得できます。
+            for (String employeeId : employeeIds) {
+                // 売上合計を取得として、employeeIdが E001 なら、employeeSales.get("E001")となり、MapがE001 →
+                // 70000ならtotalSalesには、70000が入ります。
+                int totalSales = employeeSales.get(employeeId);
+                // ここはsetTextではなくてappend()。resultArea.append("A");→
+                // 現在の文字の後ろに追加する。上のsetTextで先に全部消してから、append(...)で結果を1行ずつ追加しています。
+                resultArea.append(
+                        "従業員ID：" + employeeId
+                                + "　売上金額：" + totalSales + "円\n");
+            }
+        });
+
+        //➆に飛んで、売上ランキングを作成していく。
+        salesRankingButton.addActionListener(e -> {
+            //リザルトエリアの初期化（更新処理）
+            resultArea.setText("");
+            //従業員ID → その従業員の合計売上を保存する Map の準備。
+            Map<String, Integer> employeeSales = new HashMap<>();
+
+            for (Sale sale : saleList) {
+
+                int salesAmount = salesCalculator.calculateSales(sale);
+
+                String employeeId = sale.getEmployeeId();
+
                 employeeSales.put(
                     employeeId,
                     employeeSales.getOrDefault(employeeId, 0) + salesAmount
                 );
             }
-            //MAPキーで作った従業員別売上リストを、従業員の番号順に並べ替える処理をここで入れる。
-            // employeeSales.keySet()でMapのキーを取り出します。それをnew ArrayList<>(...)でListにします。
-            List<String> employeeIds = new ArrayList<>(employeeSales.keySet());
-            //そして、employeeIds.sort(String::compareTo);で並べ替えます。その後順番に表示します。
-            employeeIds.sort(String::compareTo);
-            //ここで一人ずつ順番に表示する処理。
-            // 最初の for が終わったら、employeeSales の中身が、E001 → 70000なら、employeeSales.keySet()によって、E001というキーの集合を取得できます。
-            for (String employeeId : employeeIds) {
-            //売上合計を取得として、employeeIdが E001 なら、employeeSales.get("E001")となり、MapがE001 → 70000ならtotalSalesには、70000が入ります。
+            //➁集計結果をEmployeeSalesに変換
+            List<EmployeeSales> rankingList = new ArrayList<>();
+
+            for (String employeeId : employeeSales.keySet()) {
+
                 int totalSales = employeeSales.get(employeeId);
-                //ここはsetTextではなくてappend()。resultArea.append("A");→ 現在の文字の後ろに追加する。上のsetTextで先に全部消してから、append(...)で結果を1行ずつ追加しています。
+
+                String employeeName = "";
+
+                for (Employee employee : employeeList) {
+
+                    if (employee.getEmployeeId().equals(employeeId)) {
+                        employeeName = employee.getName();
+                        break;
+                    }
+                }
+
+                EmployeeSales employeeSalesData =
+                    new EmployeeSales(employeeId, employeeName, totalSales);
+
+                rankingList.add(employeeSalesData);
+            }
+            //大きい売上 → 小さい売上の降順を作る形。2→1の順で書くと大きい順で、1→2の順で書くと小さい順。
+            rankingList.sort((employee1, employee2) ->Integer.compare(
+                        employee2.getTotalSales(),
+                        employee1.getTotalSales()
+                    )
+            );
+
+            //すでに売上順になった rankingList を、上から順番に表示する処理
+            int rank = 1;
+
+            for (EmployeeSales employee : rankingList) {
+
                 resultArea.append(
-                    "従業員ID：" + employeeId
+                    "第" + rank + "位　"
+                    + "従業員ID：" + employee.getEmployeeId()
+                    + "　名前：" + employee.getEmployeeName()
+                    + "　売上金額：" + employee.getTotalSales() + "円\n"
+                );
+
+                rank++;
+            }
+        });
+
+
+        //➈ボーナス判定
+        bonusButton.addActionListener(e -> {
+
+            resultArea.setText("");
+            Map<String, Integer> employeeSales = new HashMap<>();
+            //売上リストから同じようにリストを作る。今後のリファクタリングの勉強としてこのまま作る。
+            //１従業員ごとの売上を集計
+            for (Sale sale : saleList) {
+
+                int salesAmount = salesCalculator.calculateSales(sale);
+
+                String employeeId = sale.getEmployeeId();
+
+                employeeSales.put(
+                    employeeId,
+                    employeeSales.getOrDefault(employeeId, 0) + salesAmount
+                );
+            }
+            //２EmployeeSalesに従業員ごとのデータをまとめる
+            List<EmployeeSales> employeeSalesList = new ArrayList<>();
+
+            for (String employeeId : employeeSales.keySet()) {
+
+                int totalSales = employeeSales.get(employeeId);
+
+                String employeeName = "";
+
+                for (Employee employee : employeeList) {
+
+                    if (employee.getEmployeeId().equals(employeeId)) {
+                        employeeName = employee.getName();
+                        break;
+                    }
+                }
+
+                EmployeeSales employeeSalesData =
+                    new EmployeeSales(employeeId, employeeName, totalSales);
+
+                employeeSalesList.add(employeeSalesData);
+            }
+
+            //３従業員idで比較するソート。String型のまま比較している。
+            employeeSalesList.sort((employee1, employee2) ->employee1.getEmployeeId().compareTo(
+                        employee2.getEmployeeId()
+                    )
+            );
+
+            //４ボーナス判定して表示
+            for (EmployeeSales employeeSalesData : employeeSalesList) {
+
+                if (employeeSalesData.getTotalSales() >= 1700000) {
+
+                    resultArea.append(
+                        "従業員ID：" + employeeSalesData.getEmployeeId()
+                        + "　名前：" + employeeSalesData.getEmployeeName()
+                        + "　売上金額：" + employeeSalesData.getTotalSales() + "円"
+                        + "　ボーナス対象\n"
+                    );
+
+                } else {
+
+                    resultArea.append(
+                        "従業員ID：" + employeeSalesData.getEmployeeId()
+                        + "　名前：" + employeeSalesData.getEmployeeName()
+                        + "　売上金額：" + employeeSalesData.getTotalSales() + "円"
+                        + "　対象外\n"
+                    );
+                }
+            }
+        });
+
+        //➉従業員一覧表示
+        employeeListButton.addActionListener(e -> {
+
+            resultArea.setText("");
+
+            // 従業員ID順に並べる。元の employeeList 自体を並べ替えないために新しくインスタンス化する。
+            List<Employee> sortedEmployeeList = new ArrayList<>(employeeList);
+
+            sortedEmployeeList.sort(
+                (employee1, employee2) ->
+                    employee1.getEmployeeId().compareTo(
+                        employee2.getEmployeeId()
+                    )
+            );
+
+            // 従業員情報を表示
+            for (Employee employee : sortedEmployeeList) {
+
+                resultArea.append(
+                    "従業員ID：" + employee.getEmployeeId()
+                    + "　名前：" + employee.getName()
+                    + "　部署：" + employee.getDepartment()
+                    + "　雇用状況：" + employee.getStatus()
+                    + "\n"
+                );
+            }
+        });
+
+        //➂日別売上
+        //yyyy/MM/dd のように年月日の桁・形式が統一されているので、String型のままMAPに入れて比較できるという算段。
+        dailySalesButton.addActionListener(e -> {
+
+            resultArea.setText("");
+
+            Map<String, Integer> dailySales = new HashMap<>();
+
+            // 日付ごとに売上を集計
+            for (Sale sale : saleList) {
+
+                int salesAmount = salesCalculator.calculateSales(sale);
+
+                String salesDate = sale.getSalesDate();
+
+                dailySales.put(
+                    salesDate,
+                    dailySales.getOrDefault(salesDate, 0) + salesAmount
+                );
+            }
+
+            // 日付を昇順に並べる
+            List<String> salesDates =
+                new ArrayList<>(dailySales.keySet());
+
+            salesDates.sort(String::compareTo);
+
+            // 表示
+            for (String salesDate : salesDates) {
+
+                int totalSales = dailySales.get(salesDate);
+
+                resultArea.append(
+                    "売上日：" + salesDate
                     + "　売上金額：" + totalSales + "円\n"
                 );
+            }
+        });
+
+        //➃月別売上
+        monthlySalesButton.addActionListener(e -> {
+
+            resultArea.setText("");
+
+            Map<String, Integer> monthlySales = new HashMap<>();
+
+            // 月ごとに売上を集計
+            for (Sale sale : saleList) {
+
+                int salesAmount = salesCalculator.calculateSales(sale);
+
+                String salesDate = sale.getSalesDate();
+
+                //例えばsubstring(2, 5)だとしたら、0 1 [2 3 4] 5の234に該当する文字だけが取り出せる。
+                //文字： 2 0 2 6 / 0 9 / 2 1
+                //番号： 0 1 2 3 4 5 6 7 8 9、という上下の文字列の関係性。今回は↓
+                // yyyy/MM/dd → yyyy/MM 0番目から始めて、7番目は含めず、0～6番目を取り出す。という式
+                String salesMonth = salesDate.substring(0, 7);
+
+                monthlySales.put(
+                    salesMonth,
+                    monthlySales.getOrDefault(salesMonth, 0) + salesAmount
+                );
+            }
+
+            // 月を昇順に並べる
+            List<String> salesMonths =
+                new ArrayList<>(monthlySales.keySet());
+
+            salesMonths.sort(String::compareTo);
+
+            // 表示
+            for (String salesMonth : salesMonths) {
+
+                int totalSales = monthlySales.get(salesMonth);
+
+                resultArea.append(
+                    "売上月：" + salesMonth
+                    + "　売上金額：" + totalSales + "円\n"
+                );
+            }
+        });
+
+
+        //➄年別売上
+        yearlySalesButton.addActionListener(e -> {
+
+            resultArea.setText("");
+
+            Map<String, Integer> yearlySales = new HashMap<>();
+
+            // 年ごとに売上を集計
+            for (Sale sale : saleList) {
+
+                int salesAmount = salesCalculator.calculateSales(sale);
+
+                String salesDate = sale.getSalesDate();
+
+                // yyyy/MM/dd → yyyy、ここが月別と違うところで、前半4文字のみ抜き取って判定している。
+                String salesYear = salesDate.substring(0, 4);
+
+                yearlySales.put(
+                    salesYear,
+                    yearlySales.getOrDefault(salesYear, 0) + salesAmount
+                );
+            }
+
+            // 年を昇順に並べる
+            List<String> salesYears =
+                new ArrayList<>(yearlySales.keySet());
+
+            salesYears.sort(String::compareTo);
+
+            // 表示
+            for (String salesYear : salesYears) {
+
+                int totalSales = yearlySales.get(salesYear);
+
+                resultArea.append(
+                    "売上年：" + salesYear
+                    + "　売上金額：" + totalSales + "円\n"
+                );
+            }
+        });
+
+
+        //➅商品別売上
+        productSalesButton.addActionListener(e -> {
+
+            resultArea.setText("");
+
+            Map<String, Integer> productSales = new HashMap<>();
+
+            // 商品ごとに売上を集計
+            for (Sale sale : saleList) {
+
+                int salesAmount = salesCalculator.calculateSales(sale);
+
+                //ここが商品名で今回はMAPに入れる部分。商品名で同じ商品名の金額は足す仕組み。
+                String productName = sale.getProductName();
+
+                productSales.put(
+                    productName,
+                    productSales.getOrDefault(productName, 0) + salesAmount
+                );
+            }
+
+            // 商品名をListにする
+            List<String> productNames =
+                new ArrayList<>(productSales.keySet());
+
+            // 売上金額の高い順に並べる
+            productNames.sort(
+                (product1, product2) ->
+                    Integer.compare(
+                        productSales.get(product2),
+                        productSales.get(product1)
+                    )
+            );
+
+            // ランキング表示
+            int rank = 1;
+
+            for (String productName : productNames) {
+
+                int totalSales = productSales.get(productName);
+
+                resultArea.append(
+                    "第" + rank + "位　"
+                    + "商品名：" + productName
+                    + "　売上金額：" + totalSales + "円\n"
+                );
+
+                rank++;
+            }
+        });
+
+
+        //➇商品販売個数ランキングと同数なら売上額もランキング
+        productRankingButton.addActionListener(e -> {
+
+            resultArea.setText("");
+
+            Map<String, ProductSales> productMap = new HashMap<>();
+
+            // 商品ごとに売上金額と販売数量を集計
+            for (Sale sale : saleList) {
+
+                String productName = sale.getProductName();
+
+                int salesAmount =
+                    salesCalculator.calculateSales(sale);
+
+                int quantity =
+                    sale.getQuantity();
+
+                ProductSales productSales =
+                    productMap.get(productName);
+
+                if (productSales == null) {
+
+                    productSales = new ProductSales(
+                        productName,
+                        salesAmount,
+                        quantity
+                    );
+
+                } else {
+
+                    productSales = new ProductSales(
+                        productName,
+                        productSales.getTotalSales() + salesAmount,
+                        productSales.getTotalQuantity() + quantity
+                    );
+                }
+
+                productMap.put(productName, productSales);
+            }
+
+            // Mapの値をListにする
+            List<ProductSales> rankingList =
+                new ArrayList<>(productMap.values());
+
+            // ①販売数量が多い順
+            // ②同じ数量なら売上金額が高い順
+            rankingList.sort(
+                (product1, product2) -> {
+                    //まず数量を比較します。
+                    int quantityCompare =
+                        Integer.compare(
+                            product2.getTotalQuantity(),
+                            product1.getTotalQuantity()
+                        );
+
+                    //数量が違うなら、数量の比較結果だけで順位を決める
+                    //「販売数量を比較した結果、同じ数量ではなかったなら、その結果をそのまま採用する」
+                    if (quantityCompare != 0) {
+                        //「この比較処理の結果として、quantityCompareの値を返します」
+                        return quantityCompare;
+                    }
+
+                    return Integer.compare(
+                        product2.getTotalSales(),
+                        product1.getTotalSales()
+                    );
+                    /*
+                    ここのif文面白くて、メソッドと違いラムダ式だからreturnで終わるけどその下にも式を書けるみたい。
+                    if (quantityCompare != 0) {
+                        return quantityCompare;
+                    } else {
+                        return Integer.compare(
+                            product2.getTotalSales(),
+                            product1.getTotalSales()
+                        );
+                    }
+                    と同じ動きをするタイプで、ifでtrueならreturnで終わり。
+                    そうでなければ次のreturn Integerまで進むという形。
+                     */
+                }
+            );
+
+            // ランキング表示
+            int rank = 1;
+
+            for (ProductSales productSales : rankingList) {
+
+                resultArea.append(
+                    "第" + rank + "位　"
+                    + "商品名：" + productSales.getProductName()
+                    + "　販売数量：" + productSales.getTotalQuantity() + "個"
+                    + "　売上金額：" + productSales.getTotalSales() + "円\n"
+                );
+
+                rank++;
             }
         });
 
@@ -348,6 +784,8 @@ public class SalesManagementFrame extends JFrame {
         // └── JButton
         // という構造になる。
 
+        // 「このコンポーネントを表示状態にする」という意味。visible（見える状態） = true で扱う。falseだと非表示にする、となる。
+        // new JFrame()の部分は、JFrameオブジェクトを作っただけで、「画面に表示して」とは言っていない。ので、表示する式が必要。
         setVisible(true);
     }
 }
