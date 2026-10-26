@@ -68,7 +68,7 @@ public class SalesManagementFrame extends JFrame {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
-        // 上部の headerPanelタイトル部分です。setタイトルとは別なのかな？
+        // 上部の headerPanelタイトル部分です。setTitleとは別の様子。
         JPanel headerPanel = new JPanel();
         JLabel titleLabel = new JLabel("売上管理システム");
         headerPanel.add(titleLabel);
@@ -94,7 +94,7 @@ public class SalesManagementFrame extends JFrame {
 
         // メニューパネルを作ります。
         JPanel menuPanel = new JPanel();
-        // 10個のボタンを縦に並べます。10,1,5,5の部分は、10行 × 1列という意味になるらしい。謎。
+        // 10個のボタンを縦に並べます。10,1,5,5の部分は、10行 × 1列で、ボタン同士に5ピクセルの隙間を空けて並べるという意味。
         menuPanel.setLayout(new GridLayout(10, 1, 5, 5));
         JButton allSalesButton = new JButton("1. 全売上表示");
         JButton employeeSalesButton = new JButton("2. 従業員別売上");
@@ -125,7 +125,7 @@ public class SalesManagementFrame extends JFrame {
         JLabel resultLabel = new JLabel("結果");
         resultPanel.add(resultLabel, BorderLayout.NORTH);
 
-        // JTextArea テキストエリアを作成する データ型の指定どうなってるんだろ。
+        // JTextArea テキストエリアを作成する データ型の指定はprivate JTextArea resultArea;と上で宣言しているので要らない。
         // 20，60はサイズを指定していたが、サイズが変わるようにデフォルトに変更。
         resultArea = new JTextArea();
         // ユーザーが結果欄を直接編集できないようにします。
@@ -174,22 +174,6 @@ public class SalesManagementFrame extends JFrame {
         filePanel.add(saleFileLabel);
         filePanel.add(loadButton);
 
-        // 以下古いpanel用なのでコメントアウト。-----------
-        // panel.add(saleLabel);
-        // panel.add(saleButton);
-        // panel.add(saleFileLabel);
-
-        // データを読み込むボタン用
-        // panel.add(loadButton);
-        // 全売上表示ボタン用←すでに作っているのでコメントアウトにしておく。
-        // menuPanel.add(allSalesButton);
-        // JTextAreaを画面に追加
-        // panel.add(resultArea);
-        // JTextArea画面にスクロールを作ろうとしたら指定が変わった↓ 縦の場合。
-        // panel.add(scrollPane);
-
-        // パネルをウィンドウに追加はお引越し
-
         // 次に「ボタンを押したらファイル選択」を追加
         // [ファイルを選択]→クリック→JFileChooser→ファイル選択画面 showOpenDialog(this)
         // の意味は、ファイルを開くためのダイアログを、このウィンドウを親として表示する
@@ -203,11 +187,11 @@ public class SalesManagementFrame extends JFrame {
             // JFileChooser.APPROVE_OPTION 0 「開く」や「保存」ボタンが押された
             // JFileChooser.CANCEL_OPTION 1 「キャンセル」ボタンや「✕」で閉じられた
             // JFileChooser.ERROR_OPTION -1 エラーが発生した、または異常終了した
-            // というのをresultに入れているはず。
+            // という数値データをresultに入れている。
             int result = fileChooser.showOpenDialog(this);
 
             // もし、resultと一緒なら
-            // ユーザーが選択したファイルを表示かな？
+            // ユーザーがファイル選択画面で「開く」などの確定操作をしたという意味
             if (result == JFileChooser.APPROVE_OPTION) {
                 // setText()とは？これは、JLabelに表示されている文字を変更するメソッドです。未選択の部分が、CSVファイル名に変わる呪文。
                 // fileChooser.getSelectedFile()の部分が、選択されたファイルそのもののFileオブジェクト。そこからgetName()でファイル名だけを取得できます。
@@ -269,10 +253,11 @@ public class SalesManagementFrame extends JFrame {
             }
         });
 
-        // 全体売上表示ボタン処理 ※まずはコンソールに出してみる状態。
+        // 全体売上表示ボタン処理
         // CSVが入っていない場合はnullがくるので、ボタンを押されたときに処理する。
         allSalesButton.addActionListener(e -> {
             if (saleList == null) {
+                //※まずはコンソールにエラーメッセージを出す状態。
                 System.out.println("先にCSVを読み込んでください");
                 return;
             }

@@ -1,7 +1,7 @@
 package p9979w;
 
-//ここのクラスは、先に社員id 名前 売上 ボーナス判定をまとめておくと、あとで集計が楽になるかと思って作ったが、
-//そうにはならなかった様子。bonusTargetを現在使っていないかも。
+//ここのクラスは、先に社員id 名前 売上 ボーナス判定をまとめておくと、あとで集計が楽になるかと思って作ったが、そうにはならなかった。
+//利用はしているが、bonusTargetを現在使っていない。拡張for文で済ませている。
 public class EmployeeSales {
     private String employeeId;
     private String employeeName;
